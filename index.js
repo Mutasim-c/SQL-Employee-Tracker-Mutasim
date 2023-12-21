@@ -18,9 +18,16 @@ const questions = [
     type: 'list',
     message: 'What do you want to do?',
     name: 'options',
-    choices: ['view all departments', 'view all roles', 'view all employees','quit'],
+    choices: ['view all departments', 'view all roles', 'view all employees','add a department', 'quit'],
     }
 ];
+const addDepartment = [
+    {
+    type: 'input',
+    name: 'newDepartment',
+    message: 'What department do you want to add?',
+    }
+]
 
 function init() {
     inquirer.prompt(questions).then((answers) => {
@@ -40,6 +47,8 @@ function init() {
                 console.log(results);
             });
             break;
+          case 'add a department':
+            addNewDepartment();
           default:
             break
         }
@@ -48,6 +57,14 @@ function init() {
         };
   
     }).then((res) => console.log("goodbye"))
+  }
+
+  function addNewDepartment(){
+    inquirer.prompt(addDepartment).then((answers) => {
+        db.query('INSERT INTO department (name) VALUES ("?")', answers.newDepartment, function (err, results) {
+            console.log('Added new department');
+        });
+    }).then((res) => null)
   }
 
   init();
